@@ -228,13 +228,15 @@ fn collider(
                             .get_component_mut::<Transform>(entity1)
                             .unwrap()
                             .translation += (collision_normal_1.normalize_or_zero()
-                            * ((size1) - (collision_normal_1.length() * (size1 / (size1 + size2)))))
+                            * ((size1)
+                                - (collision_normal_1.length() * (size1 / (size1 + size2)))))
                             .extend(1.);
                         query
                             .get_component_mut::<Transform>(entity2.to_owned())
                             .unwrap()
                             .translation += (collision_normal_2.normalize_or_zero()
-                            * ((size2) - (collision_normal_2.length() * (size2 / (size1 + size2)))))
+                            * ((size2)
+                                - (collision_normal_2.length() * (size2 / (size1 + size2)))))
                             .extend(1.);
                     }
                 };
@@ -251,7 +253,8 @@ fn collider(
                 (bounds.1 - Vec2::splat(size.0 as f32 - 0.1)).extend(1.),
             );
         });
-    /*println!(
+    /*
+    println!(
         "{}",
         query
             .lock()
