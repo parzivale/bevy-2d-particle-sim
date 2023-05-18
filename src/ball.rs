@@ -4,7 +4,7 @@ use std::sync::{
 };
 
 use crate::{
-    particle_sim::{CollisionType, SimState},
+    particle_sim::{SimState},
     Simulation,
 };
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle, utils::HashMap};
@@ -106,7 +106,7 @@ fn space_balls(
 }
 
 fn pack_balls(
-    mut commands: ParallelCommands,
+    commands: ParallelCommands,
     mut query: Query<(&mut Transform, &Size, Entity), With<Ball>>,
     mut camera: Query<(&Camera, &GlobalTransform)>,
     time: Res<Time>,

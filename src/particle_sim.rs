@@ -1,12 +1,11 @@
-use std::{collections::BTreeMap, default, sync::Mutex};
+use std::{sync::Mutex};
 
 use bevy::{
-    ecs::query,
     prelude::*,
     tasks::{ParallelSlice, TaskPool},
 };
 
-use crate::ball::{self, Ball, Mass, Size, Velocity};
+use crate::ball::{Ball, Mass, Size, Velocity};
 
 pub struct ParticleSim;
 
@@ -50,8 +49,8 @@ impl Plugin for ParticleSim {
 }
 
 fn collider(
-    mut query: Query<(&mut Velocity, &mut Transform, &Size, &Mass, Entity), With<Ball>>,
-    time: Res<Time>,
+    query: Query<(&mut Velocity, &mut Transform, &Size, &Mass, Entity), With<Ball>>,
+    _time: Res<Time>,
     mut camera: Query<(&Camera, &GlobalTransform)>,
 ) {
     let (camera, camera_transform) = camera.get_single_mut().unwrap();
@@ -69,10 +68,10 @@ fn collider(
     let colliding = Mutex::new(Vec::new());
     query
         .par_iter()
-        .for_each(|(ball_vel1, ball_pos1, ball_size1, ball_mass1, entity1)| {
+        .for_each(|(_ball_vel1, ball_pos1, ball_size1, _ball_mass1, entity1)| {
             query
                 .par_iter()
-                .for_each(|(ball_vel2, ball_pos2, ball_size2, ball_mass2, entity2)| {
+                .for_each(|(_ball_vel2, ball_pos2, ball_size2, _ball_mass2, entity2)| {
                     if ball_pos1
                         .translation
                         .distance_squared(ball_pos2.translation)
@@ -115,7 +114,6 @@ fn collider(
                                 .lock()
                                 .unwrap()
                                 .push((entity1, CollisionType::Wall(Wall::North)));
-                            return;
                         }
                     }
                 })
